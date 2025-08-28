@@ -1,5 +1,6 @@
 const express = require("express");
 const cors = require("cors");
+const cookieParser = require("cookie-parser");
 const userRouter = require("./routes/userRoutes");
 const productRouter = require("./routes/productRoutes");
 const addressRouter = require("./routes/addressRoutes");
@@ -9,6 +10,7 @@ const app = express();
 
 // MIDDLEWARES
 app.use(express.json());
+app.use(cookieParser());
 app.use(cors());
 
 app.get("/", (req, res) => {

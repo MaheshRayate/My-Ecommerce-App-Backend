@@ -32,6 +32,10 @@ const userSchema = new mongoose.Schema({
     required: [true, "User should have a role"],
   },
 
+  passwordChangedAt: {
+    type: Date,
+  },
+
   addresses: [{ type: mongoose.Schema.Types.ObjectId, ref: "Address" }],
 
   paymentInformation: [
@@ -72,6 +76,25 @@ userSchema.methods.correctPassword = async function (
   userPassword
 ) {
   return await bcrypt.compare(candidatePassword, userPassword);
+};
+
+userSchema.methods.changedPasswordAfter = function (JWTTimestamp) {
+  console.log(this.passwordChangedAt);
+  if (this.passwordChangedAt != undefined) {
+    // console.log("Here I'm🐶🐶🐶 stuck in changedPasswordAfter");
+    const changedTimeStamp = parseInt(
+      this.passwordChangedAt.getTime() / 1000,
+      10
+    );
+
+    console.log(changedTimeStamp, JWTTimestamp);
+
+    return JWTTimestamp < changedTimeStamp;
+    // if this is true we'll throw error see that in authController.js
+  }
+
+  // by default, we will return false because we assume that the user did not change the password
+  return false;
 };
 
 const User = mongoose.model("User", userSchema);
