@@ -11,5 +11,6 @@ router.route("/login").post(authControllers.login);
 router.route("/").get(userControllers.getAllUsers);
 
 router.route("/:id").get(userControllers.getUser);
+router.route("/:id").patch(userControllers.updateUser);
 
 module.exports = router;

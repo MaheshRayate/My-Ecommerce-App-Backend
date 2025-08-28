@@ -58,6 +58,14 @@ userSchema.pre("save", async function (next) {
   next();
 });
 
+userSchema.pre(/^find/, function (next) {
+  console.log("Pre Hook");
+  this.populate({
+    path: "addresses",
+  });
+  next();
+});
+
 // Static Methods
 userSchema.methods.correctPassword = async function (
   candidatePassword,
