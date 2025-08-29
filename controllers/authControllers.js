@@ -9,7 +9,9 @@ const cookieOptions = {
     Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000
   ),
   // secure:true, //makes it work only on https
+  sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
   httpOnly: true, //for preventing cross site scripting
+  secure: process.env.NODE_ENV === "production",
 };
 
 const signToken = (id) => {
@@ -20,8 +22,6 @@ const signToken = (id) => {
 
 const createSendToken = async (user, statusCode, res) => {
   /*So first of all, a cookie is basically just a small piece of text that a server can send to clients. Then when the client receives a cookie, it will automatically store it and then automatically send it back along with all future requests to the same server. */
-
-  if (process.env.NODE_ENV === "production") cookieOptions.secure = true;
 
   const token = signToken(user._id);
 
