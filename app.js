@@ -14,10 +14,10 @@ app.use(cookieParser());
 
 app.use(
   cors({
-    origin: [
+    origin: 
       "https://my-ecommerce-app-opal.vercel.app",
-      "http://localhost:5173",
-    ], // frontend URL
+      
+     // frontend URL
     credentials: true, // allow cookies
   })
 );
