@@ -9,7 +9,7 @@ const cookieOptions = {
     Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000
   ),
   // secure:true, //makes it work only on https
-  sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+  // sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
   httpOnly: true, //for preventing cross site scripting
   secure: process.env.NODE_ENV === "production",
 };
