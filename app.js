@@ -11,9 +11,13 @@ const app = express();
 // MIDDLEWARES
 app.use(express.json());
 app.use(cookieParser());
+
 app.use(
   cors({
-    origin: "https://my-ecommerce-app-opal.vercel.app", // frontend URL
+    origin: [
+      "https://my-ecommerce-app-opal.vercel.app",
+      "http://localhost:5173",
+    ], // frontend URL
     credentials: true, // allow cookies
   })
 );
