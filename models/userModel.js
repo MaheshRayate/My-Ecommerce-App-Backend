@@ -26,6 +26,15 @@ const userSchema = new mongoose.Schema({
     type: String,
   },
 
+  gender: {
+    type: String,
+    enum: ["Male", "Female", "Other"],
+  },
+
+  dob: {
+    type: Date,
+  },
+
   role: {
     type: String,
     default: "customer",
@@ -61,6 +70,8 @@ userSchema.pre("save", async function (next) {
   this.password = await bcrypt.hash(this.password, 12);
   next();
 });
+
+// Populating Addresses
 
 userSchema.pre(/^find/, function (next) {
   console.log("Pre Hook");

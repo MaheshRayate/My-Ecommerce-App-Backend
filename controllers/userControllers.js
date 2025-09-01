@@ -30,7 +30,13 @@ exports.getUser = catchAsync(async (req, res, next) => {
 });
 
 exports.updateUser = catchAsync(async (req, res) => {
-  const id = req.params.id;
+  let id;
+  if (!req.params.id) {
+    id = req.user._id;
+  } else {
+    id = req.params.id;
+  }
+
   const user = await User.findByIdAndUpdate(id, req.body, {
     new: true,
     runValidators: true,
@@ -43,3 +49,5 @@ exports.updateUser = catchAsync(async (req, res) => {
     },
   });
 });
+
+exports.updateLoggedUser;

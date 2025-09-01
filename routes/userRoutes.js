@@ -8,7 +8,11 @@ const router = express.Router();
 router.route("/signup").post(authControllers.signup);
 router.route("/login").post(authControllers.login);
 
-router.route("/").get(authControllers.protect, userControllers.getAllUsers);
+router
+  .route("/")
+  .get(authControllers.protect, userControllers.getAllUsers)
+  .patch(authControllers.protect, userControllers.updateUser); //Updating Logged in user
+
 router
   .route("/profile")
   .get(authControllers.protect, authControllers.getUserProfile);

@@ -21,7 +21,12 @@ exports.getAllAddresses = async (req, res, next) => {
 };
 
 exports.createAddress = catchAsync(async (req, res, next) => {
+  if (!req.body.user) {
+    req.body.user = req.user._id;
+  }
+
   const address = await Address.create(req.body);
+
   res.status(201).json({
     status: "success",
     data: {
@@ -54,5 +59,16 @@ exports.updateAddress = catchAsync(async () => {
     data: {
       address,
     },
+  });
+});
+
+exports.deleteAddress = catchAsync(async (req, res, next) => {
+  const id = req.params.id;
+
+  await Address.findByIdAndDelete(id);
+
+  res.status(204).json({
+    status: "success",
+    data: null,
   });
 });

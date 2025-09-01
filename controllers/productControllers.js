@@ -105,8 +105,9 @@ exports.getAllProducts = catchAsync(async (req, res, next) => {
 });
 
 exports.getProduct = catchAsync(async (req, res, next) => {
-  console.log(req.params);
-  const product = await Product.findById(req.params.id);
+  const product = await Product.findById(req.params.id).populate({
+    path: "productReviews",
+  });
 
   res.status(200).json({
     status: "success",

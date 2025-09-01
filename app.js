@@ -4,6 +4,7 @@ const cookieParser = require("cookie-parser");
 const userRouter = require("./routes/userRoutes");
 const productRouter = require("./routes/productRoutes");
 const addressRouter = require("./routes/addressRoutes");
+const reviewRouter = require("./routes/reviewRoutes");
 const globalErrorHandler = require("./controllers/errorControllers");
 
 const app = express();
@@ -14,10 +15,8 @@ app.use(cookieParser());
 
 app.use(
   cors({
-    origin: [
-      "https://my-ecommerce-app-opal.vercel.app",
-      "http://localhost:5173",
-    ], // frontend URL
+    origin: "http://localhost:5173",
+    // frontend URL
     credentials: true, // allow cookies
   })
 );
@@ -32,6 +31,7 @@ app.get("/", (req, res) => {
 app.use("/api/v1/users", userRouter);
 app.use("/api/v1/products", productRouter);
 app.use("/api/v1/addresses", addressRouter);
+app.use("/api/v1/reviews", reviewRouter);
 
 app.use(globalErrorHandler);
 
