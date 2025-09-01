@@ -66,6 +66,10 @@ exports.login = catchAsync(async (req, res, next) => {
 
 exports.protect = catchAsync(async (req, res, next) => {
   let token;
+  
+  if (req.cookies && req.cookies.jwt) {
+    token = req.cookies.jwt;
+  }
 
   if (req.cookies && req.cookies.jwt) {
     token = req.cookies.jwt;
