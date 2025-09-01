@@ -10,6 +10,7 @@ mongoose
   .connect(process.env.DATABASE_STRING)
   .then((con) => {
     console.log("Database Connection Successfull");
+    console.log(process.env.NODE_ENV);
   })
   .catch((err) => {
     console.log("Database Connection Error - ", err);

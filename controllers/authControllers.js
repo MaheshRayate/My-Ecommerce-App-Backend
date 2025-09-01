@@ -26,7 +26,6 @@ const createSendToken = async (user, statusCode, res) => {
   /*So first of all, a cookie is basically just a small piece of text that a server can send to clients. Then when the client receives a cookie, it will automatically store it and then automatically send it back along with all future requests to the same server. */
 
   const token = signToken(user._id);
-
   res.cookie("jwt", token, cookieOptions);
 
   user.password = undefined;

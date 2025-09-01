@@ -26,6 +26,7 @@ app.use(
   })
 );
 
+
 app.get("/", (req, res) => {
   res.status(200).json({
     status: "sucess",
