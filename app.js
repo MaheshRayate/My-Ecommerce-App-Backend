@@ -9,13 +9,18 @@ const globalErrorHandler = require("./controllers/errorControllers");
 
 const app = express();
 
+const API_URL =
+  process.env.NODE_ENV === "production"
+    ? process.env.FRONTEND_PROD_URL
+    : process.env.FRONTEND_DEV_URL;
+
 // MIDDLEWARES
 app.use(express.json());
 app.use(cookieParser());
 
 app.use(
   cors({
-    origin: "http://localhost:4173",
+    origin: API_URL,
     // frontend URL
     credentials: true, // allow cookies
   })

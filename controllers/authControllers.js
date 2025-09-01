@@ -9,7 +9,7 @@ const API_URL =
     ? process.env.FRONTEND_PROD_URL
     : process.env.FRONTEND_DEV_URL;
 
-console.log(API_URL);
+
 
 const cookieOptions = {
   maxAge: 10 * 60 * 1000,
@@ -30,7 +30,7 @@ const createSendToken = async (user, statusCode, res) => {
   const token = signToken(user._id);
 
   res.cookie("jwt", token, cookieOptions);
-  console.log("👹👹", API_URL);
+  
 
   user.password = undefined;
 
