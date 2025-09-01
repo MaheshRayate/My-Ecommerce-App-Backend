@@ -4,11 +4,18 @@ const User = require("./../models/userModel");
 const { promisify } = require("util");
 const jwt = require("jsonwebtoken");
 
+const API_URL =
+  process.env.NODE_ENV === "production"
+    ? process.env.FRONTEND_PROD_URL
+    : process.env.FRONTEND_DEV_URL;
+
+console.log(API_URL);
+
 const cookieOptions = {
   maxAge: 10 * 60 * 1000,
   httpOnly: true, //for preventing cross site scripting
-  sameSite: "none", //set sameSite:none and secure:true in prod and sameSite:'lax' and secure:false in dev
-  secure: false,
+  sameSite: process.env.NODE_ENV === "production" ? "none" : "lax", //set sameSite:none and secure:true in prod and sameSite:'lax' and secure:false in dev
+  secure: process.env.NODE_ENV === "production" ? true : false,
 };
 
 const signToken = (id) => {
@@ -23,6 +30,7 @@ const createSendToken = async (user, statusCode, res) => {
   const token = signToken(user._id);
 
   res.cookie("jwt", token, cookieOptions);
+  console.log("👹👹", API_URL);
 
   user.password = undefined;
 
