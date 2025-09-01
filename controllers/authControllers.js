@@ -9,8 +9,6 @@ const API_URL =
     ? process.env.FRONTEND_PROD_URL
     : process.env.FRONTEND_DEV_URL;
 
-
-
 const cookieOptions = {
   maxAge: 10 * 60 * 1000,
   httpOnly: true, //for preventing cross site scripting
@@ -30,7 +28,6 @@ const createSendToken = async (user, statusCode, res) => {
   const token = signToken(user._id);
 
   res.cookie("jwt", token, cookieOptions);
-  
 
   user.password = undefined;
 
