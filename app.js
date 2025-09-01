@@ -14,22 +14,27 @@ const API_URL =
     ? process.env.FRONTEND_PROD_URL
     : process.env.FRONTEND_DEV_URL;
 
-// MIDDLEWARES
-app.use(express.json());
-app.use(cookieParser());
-
+// ✅ CORS (must come before routes)
 app.use(
   cors({
     origin: API_URL,
-    // frontend URL
     credentials: true, // allow cookies
+    methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
 
+// ✅ Handle preflight requests
+app.options("*", cors());
 
+// Middleware
+app.use(express.json());
+app.use(cookieParser());
+
+// Routes
 app.get("/", (req, res) => {
   res.status(200).json({
-    status: "sucess",
+    status: "success",
     message: "Hello World",
   });
 });
