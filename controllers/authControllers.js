@@ -7,7 +7,7 @@ const jwt = require("jsonwebtoken");
 const cookieOptions = {
   maxAge: 10 * 60 * 1000,
   httpOnly: true, //for preventing cross site scripting
-  sameSite: "lax", //set sameSite:none and secure:true in prod and sameSite:'lax' and secure:false in dev
+  sameSite: "none", //set sameSite:none and secure:true in prod and sameSite:'lax' and secure:false in dev
   secure: false,
 };
 
@@ -66,15 +66,14 @@ exports.login = catchAsync(async (req, res, next) => {
 
 exports.protect = catchAsync(async (req, res, next) => {
   let token;
-  
+
   if (req.cookies && req.cookies.jwt) {
     token = req.cookies.jwt;
   }
 
   if (req.cookies && req.cookies.jwt) {
     token = req.cookies.jwt;
-  }
-  else if (
+  } else if (
     req.headers.authorization &&
     req.headers.authorization.startsWith("Bearer")
   ) {
