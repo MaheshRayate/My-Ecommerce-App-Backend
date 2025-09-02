@@ -17,6 +17,17 @@ const userSchema = new mongoose.Schema({
     required: [true, "User should provide password"],
   },
 
+  passwordConfirm: {
+    type: String,
+    required: [true, "Confirm Password"],
+    validate: {
+      validator: function (el) {
+        return el === this.password;
+      },
+      message: "Passwords do not match",
+    },
+  },
+
   email: {
     type: String,
     required: [true, "User should provide email"],

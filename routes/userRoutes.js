@@ -9,6 +9,10 @@ router.route("/signup").post(authControllers.signup);
 router.route("/login").post(authControllers.login);
 
 router
+  .route("/updateMe")
+  .patch(authControllers.protect, userControllers.updateMe);
+
+router
   .route("/")
   .get(authControllers.protect, userControllers.getAllUsers)
   .patch(authControllers.protect, userControllers.updateUser); //Updating Logged in user
