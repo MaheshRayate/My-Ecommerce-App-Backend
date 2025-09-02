@@ -64,9 +64,8 @@ exports.updateAddress = catchAsync(async () => {
 
 exports.deleteAddress = catchAsync(async (req, res, next) => {
   const id = req.params.id;
-
+  
   await Address.findByIdAndDelete(id);
-
   res.status(204).json({
     status: "success",
     data: null,

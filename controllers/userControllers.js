@@ -56,6 +56,8 @@ exports.updateUser = catchAsync(async (req, res) => {
   });
 });
 
+// LOGGED IN USERS
+
 // Updating a loggedin user's data but not password
 exports.updateMe = catchAsync(async (req, res, next) => {
   // 1)Create error if user tries to update password
@@ -88,6 +90,53 @@ exports.updateMe = catchAsync(async (req, res, next) => {
     status: "success",
     data: {
       user: updatedUser,
+    },
+  });
+});
+
+exports.toggleWishList = catchAsync(async (req, res, next) => {
+  const productId = req.params.productId;
+  const user = await User.findById(req.user._id);
+  console.log("Here I'm");
+
+  if (!user) {
+    return next(new AppError("No user found", 404));
+  }
+
+  if (user?.wishList?.length === 0) {
+    user.wishList.push(productId);
+  } else {
+    const index = user?.wishList?.indexOf(productId);
+    if (index === -1) {
+      // Product not in wishlist → add it
+      user.wishList.push(productId);
+    } else {
+      // Product already in wishlist → remove it
+      user?.wishList?.splice(index, 1);
+    }
+  }
+
+  await user.save({ validateBeforeSave: false });
+
+  res.status(200).json({
+    status: "success",
+    data: {
+      wishList: user.wishList,
+    },
+  });
+});
+
+exports.getWishList = catchAsync(async (req, res, next) => {
+  const user = await User.findById(req.user._id).populate("wishList");
+
+  if (!user) {
+    return next(new AppError("User not found", 404));
+  }
+
+  res.status(200).json({
+    status: "success",
+    data: {
+      wishList: user.wishList,
     },
   });
 });

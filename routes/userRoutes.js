@@ -9,6 +9,14 @@ router.route("/signup").post(authControllers.signup);
 router.route("/login").post(authControllers.login);
 
 router
+  .route("/wishlist")
+  .get(authControllers.protect, userControllers.getWishList);
+
+router
+  .route("/wishlist/:productId")
+  .post(authControllers.protect, userControllers.toggleWishList);
+
+router
   .route("/updateMe")
   .patch(authControllers.protect, userControllers.updateMe);
 

@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
+const AppError = require("../utils/appError");
 
 const userSchema = new mongoose.Schema({
   firstName: {
@@ -73,6 +74,8 @@ const userSchema = new mongoose.Schema({
     type: Date,
     default: Date.now(),
   },
+
+  wishList: [{ type: mongoose.Schema.Types.ObjectId, ref: "Product" }],
 });
 
 // Mongoose Middlewares
@@ -82,8 +85,15 @@ userSchema.pre("save", async function (next) {
   next();
 });
 
-// Populating Addresses
+//Limiting Wishlist quantity
+// userSchema.pre("save", function (next) {
+//   if (this.wishList.length > 100) {
+//     return next(new AppError("Wishlist cannot exceed 100 products", 400));
+//   }
+//   next();
+// });
 
+// Populating Addresses
 userSchema.pre(/^find/, function (next) {
   console.log("Pre Hook");
   this.populate({
