@@ -56,6 +56,7 @@ const sendErrorProd = (err, res) => {
 
 module.exports = (err, req, res, next) => {
   let data = process.env.NODE_ENV;
+  // console.log(err);
 
   err.statusCode = err.statusCode || 500;
   err.status = err.status || "error";
@@ -64,7 +65,10 @@ module.exports = (err, req, res, next) => {
     sendErrorDev(err, res);
   } else if (process.env.NODE_ENV === "production") {
     console.log("Inside production");
+
     let error = JSON.parse(JSON.stringify(err));
+    console.log("Error - ", error);
+
     if (error.name === "CastError") {
       error = handleCastErrorDB(error);
     }
@@ -82,6 +86,8 @@ module.exports = (err, req, res, next) => {
     //If JWT token is expired
     if (error.name === "TokenExpiredError") {
       error = handleJWTExpireError(error);
+    } else {
+      return sendErrorDev(err, res);
     }
     sendErrorProd(error, res);
   }
