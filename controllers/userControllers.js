@@ -1,6 +1,8 @@
 const catchAsync = require("../utils/catchAsync");
 const AppError = require("./../utils/appError");
 const User = require("./../models/userModel");
+const Cart = require("./../models/cartModel");
+const CartItem = require("./../models/cartItemModel");
 
 const filterObj = (obj, ...allowedFields) => {
   const newObj = {};
@@ -94,25 +96,61 @@ exports.updateMe = catchAsync(async (req, res, next) => {
   });
 });
 
+// exports.toggleWishList = catchAsync(async (req, res, next) => {
+//   const productId = req.params.productId;
+//   const user = await User.findById(req.user._id);
+//   console.log("Here I'm");
+
+//   if (!user) {
+//     return next(new AppError("No user found", 404));
+//   }
+
+//   if (user?.wishList?.length === 0) {
+//     user.wishList.push(productId);
+//   } else {
+//     const index = user?.wishList?.indexOf(productId);
+//     if (index === -1) {
+//       // Product not in wishlist → add it
+//       user.wishList.push(productId);
+//     } else {
+//       // Product already in wishlist → remove it
+//       user?.wishList?.splice(index, 1);
+//     }
+//   }
+
+//   await user.save({ validateBeforeSave: false });
+
+//   res.status(200).json({
+//     status: "success",
+//     data: {
+//       wishList: user.wishList,
+//     },
+//   });
+// });
+
 exports.toggleWishList = catchAsync(async (req, res, next) => {
   const productId = req.params.productId;
   const user = await User.findById(req.user._id);
-  console.log("Here I'm");
 
   if (!user) {
     return next(new AppError("No user found", 404));
   }
 
+  let action; // will store "added" or "removed"
+
   if (user?.wishList?.length === 0) {
     user.wishList.push(productId);
+    action = "added";
   } else {
     const index = user?.wishList?.indexOf(productId);
     if (index === -1) {
       // Product not in wishlist → add it
       user.wishList.push(productId);
+      action = "added";
     } else {
       // Product already in wishlist → remove it
       user?.wishList?.splice(index, 1);
+      action = "removed";
     }
   }
 
@@ -120,6 +158,11 @@ exports.toggleWishList = catchAsync(async (req, res, next) => {
 
   res.status(200).json({
     status: "success",
+    action, // "added" or "removed"
+    message:
+      action === "added"
+        ? "Product added to wishlist"
+        : "Product removed from wishlist",
     data: {
       wishList: user.wishList,
     },
@@ -137,6 +180,19 @@ exports.getWishList = catchAsync(async (req, res, next) => {
     status: "success",
     data: {
       wishList: user.wishList,
+    },
+  });
+});
+
+
+
+exports.getCart = catchAsync(async (req, res, next) => {
+  const cart = await Cart.findOne({ user: req.user._id });
+
+  res.status(200).json({
+    status: "success",
+    data: {
+      cart,
     },
   });
 });

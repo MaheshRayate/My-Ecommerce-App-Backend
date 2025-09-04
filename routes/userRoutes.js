@@ -1,12 +1,17 @@
+const express = require("express");
 const mongoose = require("mongoose");
 const authControllers = require("./../controllers/authControllers");
 const userControllers = require("./../controllers/userControllers");
-const express = require("express");
+const cartItemRouter = require("./cartItemRoutes");
 
 const router = express.Router();
 
+router.use("/cartItem", cartItemRouter);
+
 router.route("/signup").post(authControllers.signup);
 router.route("/login").post(authControllers.login);
+
+router.route("/getCart").get(authControllers.protect, userControllers.getCart);
 
 router
   .route("/wishlist")
