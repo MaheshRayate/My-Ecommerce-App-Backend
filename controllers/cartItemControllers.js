@@ -67,7 +67,7 @@ exports.getAllCartItems = catchAsync(async (req, res, next) => {
 });
 
 exports.getCartItem = catchAsync(async (req, res, next) => {
-  const cartItem = await CartItem.findById(req.body.id);
+  const cartItem = await CartItem.findById(req.params.id);
   res.status(200).json({
     status: "success",
     data: {
@@ -91,7 +91,8 @@ exports.updateCartItem = catchAsync(async (req, res, next) => {
 });
 
 exports.deleteCartItem = catchAsync(async (req, res, next) => {
-  await CartItem.findByIdAndDelete(req.body.id);
+  // console.log(req.params.id);
+  await CartItem.findByIdAndDelete(req.params.id);
 
   res.status(204).json({
     status: "success",

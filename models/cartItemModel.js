@@ -105,14 +105,14 @@ cartItemSchema.post("save", function () {
 });
 
 cartItemSchema.pre(/^findOneAnd/, async function (next) {
-  this.c = await this.findOne();
+  this.c = await this.clone().findOne(this.getQuery());
   next();
 });
 
 cartItemSchema.post(/^findOneAnd/, async function () {
   await this.c.constructor.calcTotalCartSummary(this.c.cart);
-  next();
 });
 
 const CartItem = mongoose.model("CartItem", cartItemSchema);
 module.exports = CartItem;
+
