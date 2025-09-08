@@ -5,6 +5,7 @@ const userRouter = require("./routes/userRoutes");
 const productRouter = require("./routes/productRoutes");
 const addressRouter = require("./routes/addressRoutes");
 const reviewRouter = require("./routes/reviewRoutes");
+const orderRouter = require("./routes/orderRoutes");
 const globalErrorHandler = require("./controllers/errorControllers");
 
 const app = express();
@@ -29,6 +30,8 @@ app.options("*", cors());
 
 // Middleware
 app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+
 app.use(cookieParser());
 
 // Routes
@@ -43,6 +46,7 @@ app.use("/api/v1/users", userRouter);
 app.use("/api/v1/products", productRouter);
 app.use("/api/v1/addresses", addressRouter);
 app.use("/api/v1/reviews", reviewRouter);
+app.use("/api/v1/orders", orderRouter);
 
 app.use(globalErrorHandler);
 

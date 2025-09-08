@@ -115,4 +115,3 @@ cartItemSchema.post(/^findOneAnd/, async function () {
 
 const CartItem = mongoose.model("CartItem", cartItemSchema);
 module.exports = CartItem;
-
