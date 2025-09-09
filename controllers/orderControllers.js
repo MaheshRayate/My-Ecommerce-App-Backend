@@ -251,9 +251,8 @@ exports.paymentVerification = catchAsync(async (req, res) => {
   await cart.save();
 
   // ✅ Redirect with payment reference
-  return res.redirect(
-    `${frontendUrl}/cart/payment/paymentSuccess?reference=${razorpay_payment_id}`
-  );
+  return res.redirect(`${frontendUrl}`);
+  // /cart/payment/paymentSuccess
 });
 
 exports.checkOrderItemInOrder = catchAsync(async (req, res) => {
