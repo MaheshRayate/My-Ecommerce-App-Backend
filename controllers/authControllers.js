@@ -10,7 +10,7 @@ const API_URL =
     : process.env.FRONTEND_DEV_URL;
 
 const cookieOptions = {
-  maxAge: 10 * 60 * 1000,
+  maxAge: 60 * 60 * 1000,
   httpOnly: true, //for preventing cross site scripting
   sameSite: process.env.NODE_ENV === "production" ? "none" : "lax", //set sameSite:none and secure:true in prod and sameSite:'lax' and secure:false in dev
   secure: process.env.NODE_ENV === "production" ? true : false,

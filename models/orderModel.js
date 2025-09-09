@@ -73,8 +73,15 @@ const orderSchema = new mongoose.Schema({
 
   orderStatus: {
     type: String,
-    enum: ["Processing", "Shipped", "Delivered", "Cancelled"],
-    default: "Processing",
+    enum: [
+      "Placed",
+      "Confirmed",
+      "Shipped",
+      "Out For Delivery",
+      "Delivered",
+      "Cancelled",
+    ],
+    default: "Placed",
   },
 
   deliveryDate: {
@@ -90,6 +97,17 @@ const orderSchema = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
+});
+
+orderSchema.pre(/^find/, function (next) {
+  this.populate({
+    path: "orderItems",
+    populate: {
+      path: "product",
+      model: "Product", // optional if Mongoose can infer
+    },
+  });
+  next();
 });
 
 const Order = mongoose.model("Order", orderSchema);

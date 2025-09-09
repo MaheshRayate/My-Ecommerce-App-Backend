@@ -31,5 +31,10 @@ const orderItemSchema = new mongoose.Schema({
   },
 });
 
+orderItemSchema.pre(/^find/, function (next) {
+  this.populate("product");
+  next();
+});
+
 const OrderItem = mongoose.model("OrderItem", orderItemSchema);
 module.exports = OrderItem;

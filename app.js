@@ -6,6 +6,7 @@ const productRouter = require("./routes/productRoutes");
 const addressRouter = require("./routes/addressRoutes");
 const reviewRouter = require("./routes/reviewRoutes");
 const orderRouter = require("./routes/orderRoutes");
+const orderItemRouter = require("./routes/orderItemRoutes");
 const globalErrorHandler = require("./controllers/errorControllers");
 
 const app = express();
@@ -43,10 +44,16 @@ app.get("/", (req, res) => {
 });
 
 app.use("/api/v1/users", userRouter);
+
 app.use("/api/v1/products", productRouter);
+
 app.use("/api/v1/addresses", addressRouter);
+
 app.use("/api/v1/reviews", reviewRouter);
+
 app.use("/api/v1/orders", orderRouter);
+
+app.use("/api/v1/orderItems", orderItemRouter);
 
 app.use(globalErrorHandler);
 

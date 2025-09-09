@@ -6,6 +6,30 @@ const catchAsync = require("./../utils/catchAsync");
 const razorpayInstance = require("./../utils/razorpay");
 const crypto = require("crypto");
 
+exports.getAllOrders = catchAsync(async (req, res) => {
+  const userId = req.user._id;
+
+  const orders = await Order.find({ user: userId });
+
+  res.status(200).json({
+    status: "success",
+    results: orders.length,
+    data: {
+      orders,
+    },
+  });
+});
+
+exports.getOrderItem = catchAsync(async (req, res) => {
+  const orderItem = await OrderItem.findById(req.params.id);
+  res.status(200).json({
+    status: "success",
+    data: {
+      orderItem,
+    },
+  });
+});
+
 exports.createOrder = catchAsync(async (req, res) => {
   const userId = req.user._id;
   const { paymentMethod, addressId } = req.body;
@@ -87,7 +111,16 @@ exports.createRazorpayOrder = catchAsync(async (req, res) => {
   });
 });
 
+exports.getSample = catchAsync(async (req, res) => {
+  console.log("👹👹👹");
+  res.status(200).json({
+    status: "success",
+    message: "Message",
+  });
+});
+
 exports.getRazorpayKey = catchAsync(async (req, res) => {
+  console.log("👹👹👹");
   res.status(200).json({
     status: "success",
     data: {
@@ -134,19 +167,17 @@ exports.paymentVerification = catchAsync(async (req, res) => {
       ? process.env.FRONTEND_PROD_URL
       : process.env.FRONTEND_DEV_URL;
 
-  const {
+  const { razorpay_payment_id, razorpay_order_id, razorpay_signature } =
+    req.body;
+
+  const { addressId } = req.query;
+
+  console.log(
     razorpay_payment_id,
     razorpay_order_id,
     razorpay_signature,
-    addressId,
-  } = req.body;
-
-  // console.log(
-  //   razorpay_payment_id,
-  //   razorpay_order_id,
-  //   razorpay_signature,
-  //   addressId
-  // );
+    addressId
+  );
 
   const userId = req.user._id; // make sure user is authenticated
 
@@ -223,4 +254,11 @@ exports.paymentVerification = catchAsync(async (req, res) => {
   return res.redirect(
     `${frontendUrl}/cart/payment/paymentSuccess?reference=${razorpay_payment_id}`
   );
+});
+
+exports.checkOrderItemInOrder = catchAsync(async (req, res) => {
+  const orderId = req.params.orderId;
+  const orderItemId = req.params.orderItemId;
+
+  const order = await Order.findById(orderId);
 });
